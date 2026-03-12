@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: Käyttäjä kirjoittaa muistiinpanon ja painaa "Save"
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    Note left of server: Palvelin tallentaa muistiinpanon muistiin (notes-taulukkoon)
+    server-->>browser: HTTP status code 302 (URL redirect to /notes)
+    deactivate server
+
+    Note right of browser: Selain huomaa uudelleenohjauksen ja lataa sivun uudelleen
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server-->>browser: the css file
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    activate server
+    server-->>browser: the JavaScript file
+    deactivate server
+
+    Note right of browser: Selain alkaa suorittaa koodia, joka hakee JSON-datan
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: [{ "content": "uusi muistiinpano", "date": "2026-03-12" }, ... ]
+    deactivate server
+
+    Note right of browser: Selain suorittaa takaisinkutsufunktion, joka piirtää muistiinpanot listaksi
