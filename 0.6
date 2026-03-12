@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note right of browser: Käyttäjä kirjoittaa muistiinpanon ja painaa "Save"
+
+    Note right of browser: JavaScript estää oletusarvoisen lähetyksen (e.preventDefault())
+    Note right of browser: JavaScript lisää uuden muistiinpanon listaan ja piirtää sen heti ruudulle
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+    activate server
+    Note right of browser: Lähetetään JSON-data: {content: "...", date: "..."}
+    server-->>browser: HTTP status code 201 Created
+    deactivate server
+
+    Note right of browser: Selain ei lataa sivua uudelleen, muutos on jo näkyvissä DOM:issa
